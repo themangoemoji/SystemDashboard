@@ -46,9 +46,9 @@ home_space()
   fi
 }
 
-
-##### Main
-
+# Write page function
+write_page()
+{
 cat <<- _EOF_
 <html>
 <head>
@@ -66,3 +66,54 @@ cat <<- _EOF_
 </body>
 </html>
 _EOF_
+
+}
+
+usage()
+{
+  echo "Usage: sysinfo_page [[[-f file ] [-i]] | [-h]]"
+}
+
+##### Main
+interactive=
+filename=~/SystemDashboard.html
+
+while [ "$1" != "" ]; do
+  case $1 in
+    -f | --filename )       shift
+                            filename=$1
+                            ;;
+    -i | --interactive )    interactive=1
+                            ;;
+    -h | --help )           usage;
+                            exit
+                            ;;
+    * )                     usage;
+                            exit
+  esac
+  shift
+done
+
+# Test code to verify command line processing is a go
+if [ "$interactive" = "1" ]; then
+  response=
+  echo -n "Enter name of output file [$filename] > "
+  read response
+  if [ -n "$response" ]; then
+    filename=$response
+  fi
+
+  if
+    [ -f $filename ]; then
+    echo -n "Output file already exists. Overwrite? (y/n) > "
+    read response
+    if [ "$response" != "y" ]; then
+      echo "Do not overwrite, exiting now."
+      exit
+    fi
+  fi
+fi
+echo "Output file went to: $filename"
+
+# Write page will be commented out until the testing is complete
+# Write page > $filename

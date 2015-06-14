@@ -35,13 +35,14 @@ drive_space()
 
 home_space()
 {
-  # Temporary function stub
-  if [ "$(id -u)" = "0" ]; then
+  # User must not be guest
+  if [ "$(id -u)" = "501" ]; then
       echo "<h2>Home directory space by user</h2>"
       echo "<pre>"
       echo "Bytes Directory"
-        du -s /home/* | sort -nr
-      echo "</pre>"
+        du -s ~/* | sort -nr
+      echo "</pre>";
+    else echo "You must be a proper user to access the home space info.";
   fi
 }
 
